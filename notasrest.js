@@ -26,6 +26,16 @@ module.exports = {
          });
    },
 
+   getNotaVersao: function(codigo,callback){
+       rest.get('http://'+host+':'+port+'/notas/notas/'+codigo+'/versao')
+          .on('success', function(data, response){
+              callback(data);
+          })
+          .on('error', function(err, response){
+              callback({message:"Erro ao buscar todas as Notas"});
+          });
+   },
+
    newNota: function(notadata, callback){
       rest.post("http://"+host+":"+port+"/notas/notas/new", {
          multidata: true,
@@ -250,7 +260,7 @@ module.exports = {
    },
 
    getDocument: function(doc, callback){
-             if (doc !="" && codigo!=""){
+             if (doc !=""){
                    rest.get("http://"+host+":"+port+"/arquivos/"+doc)
                    .on('success', function(data,response){
                         callback(data);
