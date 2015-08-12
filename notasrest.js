@@ -36,7 +36,18 @@ module.exports = {
           });
    },
 
+/*
+ *     NÃO RETIRE AS LINHAS A SEGUIR...
+ *     O RESTLER SÓ FUNCIONA CORRETAMENTE SE OS DADOS FOREM ENVIADOS NESTE FORMATO...
+ *     -- PROBLEMA DO RESTLER --
+ *
+ *     notadata.nota = encodeURIComponent(notadata.nota);
+ *     notadata.tags = encodeURIComponent(notadata.tags);
+ */
+
    newNota: function(notadata, callback){
+      notadata.nota = encodeURIComponent(notadata.nota);
+      notadata.tags = encodeURIComponent(notadata.tags);
       rest.post("http://"+host+":"+port+"/notas/notas/new", {
          multidata: true,
          data: notadata
@@ -85,8 +96,19 @@ module.exports = {
       }
    },
 
+/*
+ *     NÃO RETIRE AS LINHAS A SEGUIR...
+ *     O RESTLER SÓ FUNCIONA CORRETAMENTE SE OS DADOS FOREM ENVIADOS NESTE FORMATO...
+ *     -- PROBLEMA DO RESTLER --
+ *
+ *     notadata.nota = encodeURIComponent(notadata.nota);
+ *     notadata.tags = encodeURIComponent(notadata.tags);
+ */
+
    updateNotaByCodigo: function(codigo, notadata, callback){
       if (codigo!="") {
+        notadata.nota = encodeURIComponent(notadata.nota);
+        notadata.tags = encodeURIComponent(notadata.tags);
         rest.put("http://"+host+":"+port+"/notas/notas/codigo/"+codigo,{
           multidata: true,
           data: notadata
