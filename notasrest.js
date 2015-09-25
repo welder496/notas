@@ -16,16 +16,6 @@ module.exports = {
          });
    },
 
-   getFirstNotas: function(callback){
-      rest.get("http://"+host+":"+port+"/notas/notas/first/28")
-         .on('success', function(data, response){
-              callback(data);
-         })
-         .on('error', function(err, response){
-             callback({message:"Erro ao buscar todas as Notas"});
-         });
-   },
-
    getNotaVersao: function(codigo,callback){
        rest.get('http://'+host+':'+port+'/notas/notas/'+codigo+'/versao')
           .on('success', function(data, response){
@@ -36,20 +26,21 @@ module.exports = {
           });
    },
 
-/*
- *     NÃO RETIRE AS LINHAS A SEGUIR...
- *     O RESTLER SÓ FUNCIONA CORRETAMENTE SE OS DADOS FOREM ENVIADOS NESTE FORMATO...
- *     -- PROBLEMA DO RESTLER --
- *
- *     notadata.nota = encodeURIComponent(notadata.nota);
- *     notadata.tags = encodeURIComponent(notadata.tags);
- */
+   getFirstNotas: function(callback){
+      rest.get("http://"+host+":"+port+"/notas/notas/first/20")
+         .on('success', function(data, response){
+              callback(data);
+         })
+         .on('error', function(err, response){
+             callback({message:"Erro ao buscar todas as Notas"});
+         });
+   },
 
    newNota: function(notadata, callback){
       notadata.nota = encodeURIComponent(notadata.nota);
       notadata.tags = encodeURIComponent(notadata.tags);
       rest.post("http://"+host+":"+port+"/notas/notas/new", {
-         multidata: true,
+         multipart: true,
          data: notadata
       })
       .on('success', function(data, response){
@@ -62,6 +53,7 @@ module.exports = {
 
    getNotasLike: function(parameters, callback){
      if (parameters !=""){
+        parameters = encodeURIComponent(parameters);
         rest.get("http://"+host+":"+port+"/notas/notas/like/"+parameters)
           .on('success', function(data,response){
               callback(data);
@@ -96,21 +88,12 @@ module.exports = {
       }
    },
 
-/*
- *     NÃO RETIRE AS LINHAS A SEGUIR...
- *     O RESTLER SÓ FUNCIONA CORRETAMENTE SE OS DADOS FOREM ENVIADOS NESTE FORMATO...
- *     -- PROBLEMA DO RESTLER --
- *
- *     notadata.nota = encodeURIComponent(notadata.nota);
- *     notadata.tags = encodeURIComponent(notadata.tags);
- */
-
    updateNotaByCodigo: function(codigo, notadata, callback){
       if (codigo!="") {
         notadata.nota = encodeURIComponent(notadata.nota);
         notadata.tags = encodeURIComponent(notadata.tags);
         rest.put("http://"+host+":"+port+"/notas/notas/codigo/"+codigo,{
-          multidata: true,
+          multipart: true,
           data: notadata
         })
         .on('success', function(data,response){
@@ -127,7 +110,7 @@ module.exports = {
    updateNotaById: function(id,notadata,callback){
       if (id!=""){
         rest.put("http://"+host+":"+port+"/notas/notas/id/"+id,{
-          multidata: true,
+          multipart: true,
           data: notadata
         })
         .on('success', function(data,response){
@@ -190,9 +173,9 @@ module.exports = {
       var parameters = "";
       if (vector instanceof Array){
             if (vector[0] != "") {
-                   parameters=parameters+"tags="+vector[0].trim();
+                   parameters=parameters+"tags="+encodeURIComponent(vector[0].trim());
                    for (var i=1;i<vector.length;i++) {
-                      parameters=parameters+"&tags="+vector[i].trim();
+                      parameters=parameters+"&tags="+encodeURIComponent(vector[i].trim());
                    }
             }
       }
@@ -200,12 +183,12 @@ module.exports = {
       if (parameters!="") {
             parameters="?"+parameters;
             rest.get("http://"+host+":"+port+"/notas/notas/tags/or"+parameters)
-              .on('success', function(data,response){
-                callback(data);
-              })
-              .on('error', function(err, response){
-                callback({message:"Erro ao buscar Nota no banco de dados!!"});
-              })
+                .on('success', function(data,response){
+                      callback(data);
+                })
+                .on('error', function(err, response){
+                      callback({message:"Erro ao buscar Nota no banco de dados!!"});
+                })
       } else {
              callback({message:"Parâmetros não foram definidos corretamente!!"});
       }
@@ -218,9 +201,9 @@ module.exports = {
        var parameters = "";
        if (vector instanceof Array){
              if (vector[0] != "") {
-                   parameters=parameters+"tags="+vector[0].trim();
+                   parameters=parameters+"tags="+encodeURIComponent(vector[0].trim());
                    for (var i=1;i<vector.length;i++) {
-                          parameters=parameters+"&tags="+vector[i].trim();
+                          parameters=parameters+"&tags="+encodeURIComponent(vector[i].trim());
                    }
             }
       }
@@ -246,9 +229,9 @@ module.exports = {
        var parameters = "";
        if (vector instanceof Array){
           if (vector[0] != "") {
-             parameters=parameters+"tags="+vector[0].trim();
+             parameters=parameters+"tags="+encodeURIComponent(vector[0].trim());
              for (var i=1;i<vector.length;i++) {
-                parameters=parameters+"&tags="+vector[i].trim();
+                   parameters=parameters+"&tags="+encodeURIComponent(vector[i].trim());
              }
           }
        }
@@ -285,7 +268,7 @@ module.exports = {
              if (doc !=""){
                    rest.get("http://"+host+":"+port+"/arquivos/"+doc)
                    .on('success', function(data,response){
-                        callback(data);
+                        callback("http://"+host+":"+port+"/arquivos/"+doc);
                    })
                    .on('error', function(err, response){
                         callback({message:"Erro ao buscar arquivo!!"});
@@ -311,7 +294,7 @@ module.exports = {
       } else {
              callback({message: "Arquivo não foi encontrado!!"});
       }
-  }
+   }
 
 };
 
