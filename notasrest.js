@@ -250,6 +250,16 @@ module.exports = {
        }
    },
 
+   getTagsMapReduce: function(callback){
+       rest.get("http://"+host+":"+port+"/notas/mapReduce/Tags")
+       .on("success", function(data, response){
+             callback(data);
+       })
+       .on('error', function(err, response){
+             callback({message: "Erro ao buscar arquivo!!"});
+       })
+   },
+
    getDocumentInfo: function(codigo,doc,callback){
              if (doc !="" && codigo!=""){
                    rest.get("http://"+host+":"+port+"/notas/notas/"+codigo+"/arquivo/"+doc+'/info')
