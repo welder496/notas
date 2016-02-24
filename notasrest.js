@@ -340,10 +340,6 @@ module.exports = {
              }
    },
 
-   insertDocument: function(doc,callback){
-       //TODO - maybe it'll be implemented later
-   },
-
    deleteDocument: function(codigo,doc,callback){
       if ((doc!="") && (codigo!="")) {
              rest.del("http://"+host+":"+port+"/notas/notas/"+codigo+"/arquivo/"+doc,{
