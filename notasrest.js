@@ -19,7 +19,10 @@ module.exports = {
    },
 
    getNotaVersao: function(codigo,callback){
-       rest.get('http://'+host+':'+port+'/notas/notas/'+codigo+'/versao')
+       rest.get('http://'+host+':'+port+'/notas/notas/'+codigo+'/versao',{
+            username: info.username,
+            password: info.password
+          })
           .on('success', function(data, response){
               callback(data);
           })
