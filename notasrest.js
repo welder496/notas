@@ -2,14 +2,16 @@ var rest = require('restler');
 var fs = require('fs');
 var host = 'localhost';
 var port = '12345';
+var info = JSON.parse(fs.readFileSync('../userInfo','utf8'));
+
 
 module.exports = {
 
    getNotas: function(callback){
       rest.get('http://'+host+':'+port+'/notas/notas/all',{
-            username: info.username,
-            password: info.password
-          })
+              username: info.username,
+              password: info.password
+         })
          .on('success', function(data, response){
              callback(data);
          })
@@ -20,8 +22,8 @@ module.exports = {
 
    getNotaVersao: function(codigo,callback){
        rest.get('http://'+host+':'+port+'/notas/notas/'+codigo+'/versao',{
-            username: info.username,
-            password: info.password
+              username: info.username,
+              password: info.password
           })
           .on('success', function(data, response){
               callback(data);
@@ -32,7 +34,10 @@ module.exports = {
    },
 
    getFirstNotas: function(callback){
-      rest.get("http://"+host+":"+port+"/notas/notas/first/20")
+      rest.get("http://"+host+":"+port+"/notas/notas/first/20",{
+              username: info.username,
+              password: info.password
+         })
          .on('success', function(data, response){
               callback(data);
          })
@@ -45,6 +50,8 @@ module.exports = {
       notadata.nota = encodeURIComponent(notadata.nota);
       notadata.tags = encodeURIComponent(notadata.tags);
       rest.post("http://"+host+":"+port+"/notas/notas/new", {
+         username: info.username,
+         password: info.password,
          multipart: true,
          data: notadata
       })
@@ -59,7 +66,10 @@ module.exports = {
    getNotasLike: function(parameters, callback){
      if (parameters !=""){
         parameters = encodeURIComponent(parameters);
-        rest.get("http://"+host+":"+port+"/notas/notas/like/"+parameters)
+        rest.get("http://"+host+":"+port+"/notas/notas/like/"+parameters,{
+            username: info.username,
+            password: info.password
+          })
           .on('success', function(data,response){
               callback(data);
           })
@@ -71,7 +81,10 @@ module.exports = {
 
    deleteNotaById: function(id, callback){
       if (id!=""){
-        rest.del("http://"+host+":"+port+"/notas/notas/id/"+id)
+        rest.del("http://"+host+":"+port+"/notas/notas/id/"+id,{
+            username: info.username,
+            password: info.password
+          })
           .on('success', function(data,response){
               callback(data);
           })
@@ -83,7 +96,10 @@ module.exports = {
 
    deleteNotaByCodigo: function(codigo,callback){
       if (codigo!="") {
-        rest.del("http://"+host+":"+port+"/notas/notas/codigo/"+codigo)
+        rest.del("http://"+host+":"+port+"/notas/notas/codigo/"+codigo,{
+            username: info.username,
+            password: info.password
+          })
           .on('success', function(data,response){
               callback(data);
           })
@@ -98,6 +114,8 @@ module.exports = {
         notadata.nota = encodeURIComponent(notadata.nota);
         notadata.tags = encodeURIComponent(notadata.tags);
         rest.put("http://"+host+":"+port+"/notas/notas/codigo/"+codigo,{
+          username: info.username,
+          password: info.password,
           multipart: true,
           data: notadata
         })
@@ -115,6 +133,8 @@ module.exports = {
    updateNotaById: function(id,notadata,callback){
       if (id!=""){
         rest.put("http://"+host+":"+port+"/notas/notas/id/"+id,{
+          username: info.username,
+          password: info.password,
           multipart: true,
           data: notadata
         })
@@ -131,7 +151,10 @@ module.exports = {
 
    getNotaByCodigoLike: function(codigo,callback){
       if (codigo!=""){
-        rest.get("http://"+host+":"+port+"/notas/notas/codigo/like/"+codigo)
+        rest.get("http://"+host+":"+port+"/notas/notas/codigo/like/"+codigo,{
+              username: info.username,
+              password: info.password
+          })
           .on('success', function(data,response){
               callback(data);
           })
@@ -145,7 +168,10 @@ module.exports = {
 
    getNotaByCodigo: function(codigo, callback){
       if (codigo!=""){
-        rest.get("http://"+host+":"+port+"/notas/notas/codigo/"+codigo)
+        rest.get("http://"+host+":"+port+"/notas/notas/codigo/"+codigo,{
+              username: info.username,
+              password: info.password
+          })
           .on('success', function(data,response){
               callback(data);
           })
@@ -159,7 +185,10 @@ module.exports = {
 
    getNotaById: function(id, callback){
       if (id!=""){
-        rest.get("http://"+host+":"+port+"/notas/notas/id/"+id)
+        rest.get("http://"+host+":"+port+"/notas/notas/id/"+id,{
+            username: info.username,
+            password: info.password
+          })
           .on('success', function(data,response){
               callback(data);
           })
@@ -187,7 +216,10 @@ module.exports = {
 
       if (parameters!="") {
             parameters="?"+parameters;
-            rest.get("http://"+host+":"+port+"/notas/notas/tags/or"+parameters)
+            rest.get("http://"+host+":"+port+"/notas/notas/tags/or"+parameters,{
+                    username: info.username,
+                    password: info.password
+                })
                 .on('success', function(data,response){
                       callback(data);
                 })
@@ -215,7 +247,10 @@ module.exports = {
 
       if (parameters!="") {
             parameters="?"+parameters;
-            rest.get("http://"+host+":"+port+"/notas/notas/tags/and"+parameters)
+            rest.get("http://"+host+":"+port+"/notas/notas/tags/and"+parameters,{
+                  username: info.username,
+                  password: info.password
+              })
               .on('success', function(data,response){
                 callback(data);
               })
@@ -243,7 +278,10 @@ module.exports = {
 
        if (parameters!="") {
           parameters="?"+parameters;
-            rest.get("http://"+host+":"+port+"/notas/notas/tags/like"+parameters)
+            rest.get("http://"+host+":"+port+"/notas/notas/tags/like"+parameters,{
+                  username: info.username,
+                  password: info.password
+              })
               .on('success', function(data,response){
                 callback(data);
               })
@@ -256,7 +294,10 @@ module.exports = {
    },
 
    getTagsMapReduce: function(callback){
-       rest.get("http://"+host+":"+port+"/notas/mapReduce/Tags")
+       rest.get("http://"+host+":"+port+"/notas/mapReduce/Tags",{
+          username: info.username,
+          password: info.password
+       })
        .on("success", function(data, response){
              callback(data);
        })
@@ -267,7 +308,10 @@ module.exports = {
 
    getDocumentInfo: function(codigo,doc,callback){
              if (doc !="" && codigo!=""){
-                   rest.get("http://"+host+":"+port+"/notas/notas/"+codigo+"/arquivo/"+doc+'/info')
+                   rest.get("http://"+host+":"+port+"/notas/notas/"+codigo+"/arquivo/"+doc+'/info',{
+                        username: info.username,
+                        password: info.password
+                   })
                    .on('success', function(data,response){
                         callback(data);
                    })
@@ -281,7 +325,10 @@ module.exports = {
 
    getDocument: function(doc, callback){
              if (doc !=""){
-                   rest.get("http://"+host+":"+port+"/arquivos/"+doc)
+                   rest.get("http://"+host+":"+port+"/arquivos/"+doc,{
+                        username: info.username,
+                        password: info.password
+                   })
                    .on('success', function(data,response){
                         callback("http://"+host+":"+port+"/arquivos/"+doc);
                    })
@@ -293,13 +340,12 @@ module.exports = {
              }
    },
 
-   insertDocument: function(doc,callback){
-       //TODO - maybe it'll be implemented later
-   },
-
    deleteDocument: function(codigo,doc,callback){
       if ((doc!="") && (codigo!="")) {
-             rest.del("http://"+host+":"+port+"/notas/notas/"+codigo+"/arquivo/"+doc)
+             rest.del("http://"+host+":"+port+"/notas/notas/"+codigo+"/arquivo/"+doc,{
+                username: info.username,
+                password: info.password
+             })
              .on('success', function(data,response){
                  callback(data);
              })
