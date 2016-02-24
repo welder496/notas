@@ -1,13 +1,16 @@
 var rest = require('restler');
 var fs = require('fs');
-
 var host = 'localhost';
 var port = '12345';
+var info = JSON.parse(fs.readFileSync('../userInfo','utf8'));
 
 module.exports = {
 
    getNotas: function(callback){
-      rest.get('http://'+host+':'+port+'/notas/notas/all')
+      rest.get('http://'+host+':'+port+'/notas/notas/all',{
+              username: info.username,
+              password: info.pasword
+         })
          .on('success', function(data, response){
              callback(data);
          })
