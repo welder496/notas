@@ -4,6 +4,7 @@ var host = 'localhost';
 var port = '12345';
 var info = JSON.parse(fs.readFileSync('../userInfo','utf8'));
 
+
 module.exports = {
 
    getNotas: function(callback){
@@ -337,10 +338,6 @@ module.exports = {
              } else {
                     callback({message: "Arquivo não foi encontrado!!"});
              }
-   },
-
-   insertDocument: function(doc,callback){
-       //TODO - maybe it'll be implemented later
    },
 
    deleteDocument: function(codigo,doc,callback){
