@@ -4,6 +4,7 @@ var host = 'localhost';
 var port = '12345';
 var info = JSON.parse(fs.readFileSync('../userInfo','utf8'));
 
+
 module.exports = {
 
    getNotas: function(callback){
